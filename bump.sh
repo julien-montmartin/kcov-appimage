@@ -12,4 +12,4 @@ echo "${msg}"
 
 git commit --allow-empty -m "${msg}"
 git tag ${version}
-git push --tags
+git push --tags -f origin HEAD:master
