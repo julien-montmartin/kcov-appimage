@@ -1,28 +1,32 @@
 #!/bin/bash
 
-
 root=$(readlink -f .)
-sources="${root}"/src
-resources="${root}"/resources
-build="${root}"/build
-log="${root}"/log
-appdir="${root}"/appdir
+sources=${root}/src
+resources=${root}/resources
+build=${root}/build
+log=${root}/log
+appdir=${root}/appdir
 
+version=v$(wget -q -O - https://github.com/SimonKagstrom/kcov/releases \
+			  | grep -o -E '/SimonKagstrom/kcov/archive/v[[:digit:]]+.tar.gz' \
+			  | grep -o -E '[[:digit:]]+' \
+			  | sort -n -r \
+			  | head -n 1)
 
 make_kcov() {
 
 	cd "${sources}"
 
-	if [ ! -f kcov-master.tar.gz ] ; then
+	if [ ! -f kcov-${version}.tar.gz ] ; then
 
-		wget -O kcov-master.tar.gz https://github.com/SimonKagstrom/kcov/archive/master.tar.gz
+		wget -O kcov-${version}.tar.gz https://github.com/SimonKagstrom/kcov/archive/${version}.tar.gz
 	fi
 
 	cd "${build}"
 
-	tar -xzf "${sources}"/kcov-master.tar.gz
+	tar -xzf "${sources}"/kcov-${version}.tar.gz
 
-	cd kcov-master
+	cd kcov-*
 
 	cmake . -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr
 
@@ -84,7 +88,9 @@ make_appimage() {
 
 	cd "${root}"
 
-	"${resources}"/appimagetool-x86_64.AppImage "${appdir}"
+	ARCH=x86_64 "${resources}"/appimagetool-x86_64.AppImage "${appdir}"
+
+	mv kcov*.AppImage kcov-${version}-x86_64.AppImage
 }
 
 

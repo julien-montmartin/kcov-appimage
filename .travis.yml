@@ -2,31 +2,32 @@ language: cpp
 
 dist: trusty
 
-os:
-  - linux
-
-compiler:
-  - gcc
+compiler: gcc
 
 addons:
   apt:
     packages:
-      - binutils-dev
-      - libcurl4-openssl-dev
-      - zlib1g-dev
-      - libdw-dev
-      - libiberty-dev
-      - cmake
-      - gcc
+    - binutils-dev
+    - libcurl4-openssl-dev
+    - zlib1g-dev
+    - libdw-dev
+    - libiberty-dev
+    - cmake
+    - gcc
+    - g++
+    - make
+    - python
 
-after_success:
-  - wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh
-  - bash upload.sh kcov-x86_64.AppImage
+script:
+- bash -C ./kcov-appimage.sh
+
+before_deploy:
+- export AppImage=$(echo kcov*.AppImage)
 
 deploy:
   provider: releases
-  api_key: ralvi2EFV/OGgF/301xnSaNWLQovxr0S6HjuXTiz7LpVvro5r+Kc1ubh7+2H7q1luJfkoNj+abpLHNLqGK3aV8QZKCwZ4KUm7VNDM+wvG7/EH1GKUADKMwWWSH0NQ3k3oEKGqrgMwDergxD0Cp6wErrf2JEytE0/mYEgbf513HmfzZseoOicnaNNg4xuZ+reVgp0zgIfYEKgyosbe8+hBV4kMhaIhlH8+3T1xohAuPEVg1MKl4L7mNW3bqZPrTkvqaUwyANJXTJmmIg+Ohs6eoHkBn1r7xr/2rwDI0IjVfVxicM8rWGaaDv8tpytFsS3ABCeUojeiZl491HEaB/kz8PWlAKErAhMgtrqDG5E8Qva3+tlhjZLPLf4e+ixp36GWrLhpPjI/Qk65eshfjC2EeUcCODeBvhN/Rman9q85KOISBuqwsiwFxvh2XZC4hGz5FqJozfPsJeGAZ0GpkvRodnS8b2Nlwns5ivPfN07w3mUN5ldL5Lr7w1jpe+Y2U4tSyEczOyqBA7edSi44cHUAnZDKgMGPOcjTrVtPuOESLqqhWfxVpDqC33TcFf0//+dxzl/3vt20cencp196kN3+AOSDmBtI5qZq9Cf+frs+qsTzoqEFDw7H4u0ZBzaJSSj3UPTTfR69QMp9EGBBqrvgvIke0RjeOrO7az48keUk9s=
-  file: kcov-x86_64.AppImage
+  api_key: $GITHUB_TOKEN
+  file: "${AppImage}"
   skip_cleanup: true
-  #on:
-  #  tags: true
+  on:
+    all_branches: true
