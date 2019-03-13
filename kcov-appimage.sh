@@ -54,6 +54,7 @@ Icon=kcov
 Type=Application
 Exec=kcov
 Categories=Development;
+Terminal=true
 EOF
 
 	cat "${appdir}"/usr/share/applications/kcov.desktop
