@@ -10,6 +10,12 @@ msg="Trigger Travis build for Kcov ${version}"
 
 echo "${msg}"
 
-git commit --allow-empty -m "${msg}"
+cat > trampoline.txt <<EOF
+url https://github.com/julien-montmartin/kcov-appimage/releases/download/${version}/kcov-x86_64.AppImage
+output kcov-x86_64.AppImage
+EOF
+
+git add trampoline.txt
+git commit -m "${msg}"
 git tag ${version}
 git push --tags -f origin HEAD:master

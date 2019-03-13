@@ -11,20 +11,11 @@ This kind of Bash script may help you to download the latest AppImage of Kcov fr
 ```bash
 getKcovAppImage() {
 
-	repo=julien-montmartin/kcov-appimage
-	html=$(wget -q -O - https://github.com/${repo}/releases/latest)
-	release=$(grep -o -E /${repo}/releases/download/[^/]+/kcov-[^.]+\\.AppImage <<< ${html})
-	url=https://github.com/${release}
-	kcov=kcov.AppImage
-
-	wget -q -O ${kcov} ${url}
-	chmod +x ${kcov}
-
-	cmd="./${kcov} --version"
-	ver=$(eval ${cmd})
-
-	echo "Running ${cmd} says ${ver}"
+	trampoline=https://raw.githubusercontent.com/julien-montmartin/kcov-appimage/master/trampoline.txt
+	curl -s ${trampoline} | curl -sLK -
+	chmod +x ./kcov-x86_64.AppImage
+	echo "Running AppImage of $(./kcov-x86_64.AppImage --version)"
 }
 ```
 
-Call `getKcovAppImage` and run `./kcov.AppImage` with the command line you need for your project. See [this](https://github.com/julien-montmartin/ternary-tree) Rust repo for a working example.
+Call `getKcovAppImage` and run `./kcov-x86_64.AppImage` with the command line you need for your project. See [this](https://github.com/julien-montmartin/ternary-tree) Rust repo for a working example.

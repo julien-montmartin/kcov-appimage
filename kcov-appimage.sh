@@ -55,6 +55,7 @@ Type=Application
 Exec=kcov
 Categories=Development;
 Terminal=true
+Comment=kcov code coverage tool ${version}
 EOF
 
 	cat "${appdir}"/usr/share/applications/kcov.desktop
@@ -91,7 +92,7 @@ make_appimage() {
 
 	ARCH=x86_64 "${resources}"/appimagetool-x86_64.AppImage "${appdir}"
 
-	mv kcov*.AppImage kcov-${version}-x86_64.AppImage
+	#mv kcov*.AppImage kcov-${version}-x86_64.AppImage
 }
 
 
