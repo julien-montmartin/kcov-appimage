@@ -16,6 +16,7 @@ output kcov-x86_64.AppImage
 EOF
 
 git add trampoline.txt
-git commit -m "${msg}"
+git commit --allow-empty -m "${msg}"
+git tag -d ${version}
 git tag ${version}
 git push --tags -f origin HEAD:master
